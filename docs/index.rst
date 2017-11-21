@@ -1,0 +1,5 @@
+====================
+collective.convertoldimgscalepath
+====================
+
+User documentation
