@@ -17,6 +17,18 @@ class ConvertScalePathsView(BrowserView):
         )
         for item in items:
             obj = item.getObject()
+
+            # workaround for previously wrong converted strings
+            # remove this at some point...
+            if obj.text and '/image/\x02' in obj.text.raw:
+                obj.text = RichTextValue(
+                    obj.text.raw.replace("/image/\x02", "/image/"),
+                    mimeType=obj.text.mimeType,
+                    encoding=obj.text.encoding,
+                    outputMimeType=obj.text.outputMimeType,
+                )
+
+            # the real thing...
             if obj.text and '/image_' in obj.text.raw:
                 obj.text = RichTextValue(
                     re.sub(r"(\/image_)(.*?)", r"/@@images/image/\2",
